@@ -1,16 +1,17 @@
-AuthValidarAcceso <- function(id) {
+AuthCrearUsuario <- function(id) {
   ns <- NS(id)
   
   tags$div(
-    class = 'login-form',
+    class = 'signup-form',
+    h1('Crea tu cuenta'),
     textInput(ns('email'), label = 'Email'),
     passwordInput(ns('password'), label = 'Contraseña'),
     tags$br(),
-    actionButton(ns('acceder'), 'INICIAR SESIÓN')
+    actionButton(ns('acceder'), 'Crear Cuenta')
   )
   
 }
-AuthValidarAccesoServer <- function(id) {
+AuthCrearUsuarioServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -20,8 +21,10 @@ AuthValidarAccesoServer <- function(id) {
         
         e <- isolate(input$email)
         p <- isolate(input$password)
-        
-        acceso <- tryCatch({tryLogin(e, p)}, error = function(e) {0})
+        if(any((is.null(e)) | (is.null(p)) | (length(unlist(strsplit(as.character(p), ""))) < 3))) {
+          return(showModal(modalDialog('Usuario y contraseña son obligatorios y la contraseña debe tener 3 o más caracteres')))
+        } 
+        acceso <- tryCatch({trySignup(e, p)}, error = function(e) {0})
         if(acceso != 0) {
           session$userData$user <- readUser(acceso)
           navigator('navigate', 'service', 'app', session)

@@ -1,4 +1,8 @@
 library(shiny)
+library(readr)
+
+###### MAIN DIR ######
+mainDir <- '../'
 
 helpers <- dir('helpers')
 lapply(helpers, function(x)  tryCatch({source(paste0('helpers/', x))}, error = function(e) {print(paste0('Error en el Script ', x))}))
