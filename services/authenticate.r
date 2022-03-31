@@ -8,12 +8,12 @@ AuthenticateServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
-      print(navigator('breadcrumbs'))
-      navigator('navigate', process, 'Iniciar Sesión', session)
+      print(navigator('breadcrumbs', session = session))
+      navigator('navigate', 'process', 'Iniciar Sesión', session)
       
-      observeEvent(process(), {
+      observeEvent(session$userData$process(), {
         switch (
-          process(),
+          session$userData$process(),
           'Iniciar Sesión' = AuthLoginServer('loginOut'),
           'Crear cuenta' = AuthSignupServer('signupOut'),
           'Recuperar Password' = AuthRecoverServer('recoverOut'),
@@ -24,11 +24,11 @@ AuthenticateServer <- function(id) {
       ns <- session$ns
       output$processOut <- renderUI({
         switch (
-          process(),
+          session$userData$process(),
           'Iniciar Sesión' = AuthLogin(ns('loginOut')),
           'Crear cuenta' = AuthSignupServer(ns('signupOut')),
           'Recuperar Password' = AuthRecoverServer(ns('recoverOut')),
-          Error404(navigator('breadcrumbs'))
+          Error404(navigator('breadcrumbs', session))
         )
       })
     }

@@ -7,13 +7,13 @@ AppServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
-      print(navigator('breadcrumbs'))
-      navigator('navigate', process, 'Bienvenido', session)
+      print(navigator('breadcrumbs', session = session))
+      navigator('navigate', 'process', 'Bienvenido', session)
       
       
-      observeEvent(process(), {
+      observeEvent(session$userData$process(), {
         switch (
-          process(),
+          session$userData$process(),
           'Bienvenido' = AppBienvenidoServer('bienvenidoOut'),
           print('No se encuentra la ruta')
         )
@@ -22,9 +22,9 @@ AppServer <- function(id) {
       ns <- session$ns
       output$processOut <- renderUI({
         switch (
-          process(),
+          session$userData$process(),
           'Bienvenido' = AppBienvenido(ns('bienvenidoOut')),
-          Error404(navigator('breadcrumbs'))
+          Error404(navigator('breadcrumbs', session))
         )
       })
     }

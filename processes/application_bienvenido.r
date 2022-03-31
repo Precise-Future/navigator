@@ -8,12 +8,12 @@ AppBienvenidoServer <- function(id) {
     id,
     function(input, output, session) {
       
-      print(navigator('breadcrumbs'))
-      navigator('navigate', activity, 'Bienvenido default')
+      print(navigator('breadcrumbs', session = session))
+      navigator('navigate', 'activity', 'Bienvenido default', session)
       
-      observeEvent(process(), {
+      observeEvent(session$userData$activity(), {
         switch (
-          activity(),
+          session$userData$activity(),
           'Bienvenido default' = AppBienvenidoDefaultServer('bienvenidoOut'),
           print('Ruta desconocida')
         )
@@ -22,9 +22,9 @@ AppBienvenidoServer <- function(id) {
       ns <- session$ns
       output$activityOut <- renderUI({
         switch (
-          activity(),
+          session$userData$activity(),
           'Bienvenido default' = AppBienvenidoDefault(ns('bienvenidoOut')),
-          Error404(navigator('breadcrumbs'))
+          Error404(navigator('breadcrumbs', session))
         )
       })
     }

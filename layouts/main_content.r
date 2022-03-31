@@ -8,12 +8,12 @@ MainContentServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
-      print(navigator('breadcrumbs'))
-      navigator('navigate', service, 'authenticate', session)
+      print(navigator(method = 'breadcrumbs', session = session))
+      navigator(method = 'navigate', controller = 'service', params = 'authenticate', session = session)
       
-      observeEvent(service(), {
+      observeEvent(session$userData$service(), {
         switch (
-          service(),
+          session$userData$service(),
           'authenticate' = AuthenticateServer('authOut'),
           'app' = AppServer('appOut')
         )
@@ -22,7 +22,7 @@ MainContentServer <- function(id) {
       ns <- session$ns
       output$serviceOut <- renderUI({
         switch (
-          service(),
+          session$userData$service(),
           'authenticate' = Authenticate(ns('authOut')),
           'app' = App(ns('appOut'))
         )

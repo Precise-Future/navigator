@@ -10,7 +10,7 @@ AppBienvenidoDefaultServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
-      print(navigator('breadcrumbs'))
+      print(navigator('breadcrumbs', session = session))
     }
   )
 }

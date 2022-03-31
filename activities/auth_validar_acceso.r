@@ -14,7 +14,7 @@ AuthValidarAccesoServer <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {
-      print(navigator('breadcrumbs'))
+      print(navigator('breadcrumbs', session = session))
       
       observeEvent(input$acceder, {
         
@@ -23,7 +23,7 @@ AuthValidarAccesoServer <- function(id) {
         
         acceso <- tryCatch({tryLogin(e, p)}, error = function(e) {0})
         if(acceso != 1) {
-          navigator('navigate', service, 'app', session)
+          navigator('navigate', 'service', 'app', session)
         }
         
       }, ignoreInit = T, ignoreNULL = T)
