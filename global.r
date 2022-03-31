@@ -23,7 +23,3 @@ rm(services)
 layouts <- dir('layouts')
 lapply(layouts, function(x) tryCatch({source(paste0('layouts/', x))}, error = function(e) {print(paste0('Error en el Script ', x))}))
 rm(layouts)
-
-service <- reactiveVal()
-process <- reactiveVal()
-activity <- reactiveVal()

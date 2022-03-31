@@ -5,25 +5,37 @@ setFlow = function(session, states) {
 getFlow = function(session) session$userData$Flow
 
 navigate = function(controller, to) {
-  if(is.null(isolate(controller()))) return(controller(to)) else 
-    if(isolate(controller()) != to) return(controller(to)) 
+  switch (controller,
+    'activity' = {
+      if(is.null(isolate(session$userData$activity()))) return(session$userData$activity(to)) else 
+        if(isolate(session$userData$activity()) != to) return(session$userData$activity(to)) 
+    },
+    'process' = {
+      if(is.null(isolate(session$userData$process()))) return(session$userData$process(to)) else 
+        if(isolate(session$userData$process()) != to) return(session$userData$process(to)) 
+    },
+    'service' = {
+      if(is.null(isolate(session$userData$service()))) return(session$userData$service(to)) else 
+        if(isolate(session$userData$service()) != to) return(session$userData$service(to)) 
+    }
+  )
 }
 
 locate <- function() {
   return(
     list(
-      'service' = isolate(service()),
-      'process' = isolate(process()),
-      'activity' = isolate(activity())
+      'service' = isolate(session$userData$service()),
+      'process' = isolate(session$userData$process()),
+      'activity' = isolate(session$userData$activity())
     )
   )
 }
 
 breadcrumbs = function() paste0(c(as.character(unlist(locate()))), collapse = " / ")
 
-getActivity = function() isolate(activity())
-getProcess = function() isolate(process())
-getService = function() isolate(service())
+getActivity = function() isolate(session$userData$activity())
+getProcess = function() isolate(session$userData$process())
+getService = function() isolate(session$userData$service())
 
 goBack = function(session, controller) {
   flow <- getFlow(session)
